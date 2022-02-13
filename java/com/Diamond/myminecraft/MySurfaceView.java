@@ -56,9 +56,9 @@ public class MySurfaceView extends GLSurfaceView {
                 skybox.setScale(100);
                 
                 cube = new ObjLoader(am.open("model/cube.obj"));
-                cubes = new ObjInstance(cube);
-                createNewWorld(10);
-                cubes.init(cube);
+                cubes = new ObjInstance(cube,InstanceData.MAX_INSTANCE_NUMBER);
+                createNewWorld(100);
+                cubes.update();
                 
                 grassTexture = new Texture(gl.GL_TEXTURE_2D);
                 grassTexture.bind(Texture.default_parameters,Texture.loadBitmap(R.raw.grass,getResources()));
