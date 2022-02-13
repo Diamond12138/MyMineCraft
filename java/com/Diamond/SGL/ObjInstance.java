@@ -7,25 +7,15 @@ import android.util.Log;
 public class ObjInstance extends Instance {
 	public int[] VBOs;
 	
-    public ObjInstance(ObjLoader loader) {
+    public ObjInstance(ObjLoader loader,int max) {
         super(loader.vertices.length / 3);
         
         VBOs = new int[4];
-    }
-    
-    public float[] getMatrices() {
-        float[] matrices = new float[sprites.size() * 16];
-        for (int i = 0; i < sprites.size(); i++) {
-            float[] matrix = sprites.get(i).getMatrixArray();
-            for (int j = 0; j < 16; j++) {
-                matrices[i * 16 + j] = matrix[j];
-            }
+        
+        float[] matrices = new float[max * 16];
+        for (int i = 0; i < matrices.length; i++) {
+            matrices[i] = 0;
         }
-        return matrices;
-    }
-    
-    public ObjInstance init(ObjLoader loader) {
-        float[] matrices = getMatrices();
         
         VBOs[0] = BufferUtil.bindVBO(Program.VertexAttribLocation.a_position, 3, loader.vertices, GLES32.GL_STATIC_DRAW);
         VBOs[1] = BufferUtil.bindVBO(Program.VertexAttribLocation.a_normal, 3, loader.normals, GLES32.GL_STATIC_DRAW);
@@ -45,7 +35,17 @@ public class ObjInstance extends Instance {
         GLES32.glEnableVertexAttribArray(7);
         GLES32.glVertexAttribDivisor(7,1);
         GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER,0);
-        return this;
+    }
+    
+    public float[] getMatrices() {
+        float[] matrices = new float[sprites.size() * 16];
+        for (int i = 0; i < sprites.size(); i++) {
+            float[] matrix = sprites.get(i).getMatrixArray();
+            for (int j = 0; j < 16; j++) {
+                matrices[i * 16 + j] = matrix[j];
+            }
+        }
+        return matrices;
     }
     
     public ObjInstance update() {
